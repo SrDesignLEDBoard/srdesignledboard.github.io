@@ -116,7 +116,7 @@
               </p>
               <ul class="cir">
                 <li>3D Printing Device</li>
-                <li><a href="../files/objects_3d_print.zip">3D Printed Panels</a></li>
+                <li><a href="../files/complete_3d_objects.zip">3D Printed Panels</a></li>
                 <li>Jumper Wires to Connect from the Buttons to the Circuit</li>
                 <li>Soldering Iron Equipment</li>
                 <li>Wi-Fi Connection</li>
@@ -139,24 +139,93 @@
             this installation guide step-by-step.<br>
 
             <ol type="1">
-              <li>Begin by printing out the 3D objects by downloading it <a href="../files/objects_3d_print.zip">here</a>.</li>
+              <li>Begin by printing out the 3D objects by downloading it <a href="../files/complete_3d_objects.zip">here</a>.
+              <br><p>&emsp; NOTE: If the buttons don't fit in the case, use a metal file to shave the button holes at the top of the case.</p>
+              </li>
+              <li>
+              Using the micro SD card you bought
+              <br><p>
+              &emsp;    i. Download and install Raspbian Buster Lite OS disk image on your PC.<br>
+              &emsp;   ii. Flash the disk image from your PC to the SD card.<br>
+              &emsp;  iii. Locate the /boot directory that your SD card is mounted as.<br>
+              &emsp;   iv. Create a plaintext file called <i>wpa_supplicant.conf</i> and paste the following code.
+                <pre class="  language-bash"><code class="  language-bash"><span class="token assign-left variable">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;country</span><span class="token operator">=</span>US <span class="token comment"># Your 2-digit country code</span>
+                  <span class="token assign-left variable">ctrl_interface</span><span class="token operator">=</span>DIR<span class="token operator">=</span>/var/run/wpa_supplicant <span class="token assign-left variable">GROUP</span><span class="token operator">=</span>netdev
+                  <span class="token assign-left variable">network</span><span class="token operator">=</span><span class="token punctuation">{</span>
+                      <span class="token assign-left variable">ssid</span><span class="token operator">=</span><span class="token string">"YOUR_NETWORK_NAME"</span>
+                      <span class="token assign-left variable">psk</span><span class="token operator">=</span><span class="token string">"YOUR_PASSWORD"</span>
+                      <span class="token assign-left variable">key_mgmt</span><span class="token operator">=</span>WPA-PSK
+                  <span class="token punctuation">}</span></code>
+                </pre>
+              &emsp;    v. Replace the country, ssid, and psk variable values with correct values that correspond to your 2.4GHz network.<br>
+              &emsp;   vi. Create an empty file named <i>ssh</i> by executing the following code your shell.<br>
+              <pre class="  language-bash"><code class="  language-bash"><span class="token function">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;touch</span> <span class="token function">ssh</span></code></pre>
+              </p>
+              </li>
+              <li>
+              Insert the SD card into the Pi and boot up the system.
+              <p>&emsp; NOTE: Make sure the .conf file you made disappears from your SD card's /boot directory once your Pi boots up, correctly.</p>
+              </li>
+              <li>Connect the RGB bonnet on top of the Raspberry Pi.</li>
+              <li>Solder the button to the bonnet to pin 24 using a jumper wire.</li>
+              <li>To prevent the LED panle from flickering, solder another, smaller jumper wire from port 4 to port 18 on the bonnet.</li>
+              <li>Using the gray ribbon you bought, connect one end to the panel's JIN1 port and the other end to the bonnet's JIN1 port.</li>
+              <li>With the Y-cable included with the LED panel, connect one of the connectors to the battery side of the panel.</li>
+              <li>On the other end of the Y-cable are two pitchfork connectors
+              <br><p>
+              &emsp;    i. Connect the red wire's pitchfork connecter to the positive terminal shown on the bonnet by using a flathead screwdriver.<br>
+              &emsp;   ii. Connect the black wire's pitchfork connecter to the negative terminal shown on the bonnet by using a flathead screwdriver.
+              </p>
+              </li>
+              <li>
+              Connect the power supply to the bonnet and wait unitl a green light turns on.
+              </li>
+              <li>
+              Screw the 3D printed panels onto the holes in the LED panel.
+              </li>
+              <li>
+              Drill 4 holes on the sides of the 3D printed case for the LED board at the locations where the panels have holes standing up.
+              </li>
+              <li>
+              Screw the LED board onto the case, insert the power supply cord through the rectangular hole on the 3D printed case.
+              </li>
+              <li>
+              Connect to your Raspberry Pi by using the &ensp;<i>ssh pi@raspberrypi</i> &ensp;command, the default username is <i>pi</i> and the default password is <i>raspberry</i>.
+              </li>
+              <li>Now that in your Pi's terminal, run the command below.
+              <pre class="  language-bash"><code class="  language-bash"><span class="token assign-left variable">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sudo raspi-config</span></code></pre>
+              </li>
+              <li>
+              Navigate to the option titled "Localisation Options" and set the timezone to your local timezone.
+              <br><p>&emsp; NOTE: You can use the Raspberry Pi Configuration Tool to change the ssh username and password, for more security.</p>
+              </li>
+              <li>
+              Install the Python, Git and Pip tools with the following command.
+              <pre class="  language-bash"><code class="  language-bash"><span class="token assign-left variable">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sudo apt-get git python3 python3-pip</span></code></pre>
+              </li>
+              <li>
+              Clone the project repository by pasting this command on the terminal.
+              <pre class="  language-bash"><code class="  language-bash"><span class="token assign-left variable">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;git clone --recursive https://github.com/SrDesignLEDBoard/super-board</span></code></pre>
+              </li>
+              <li>
+              Change into the project directory and install the rpi-rgb-led-matrix located inside.
+              </li>
+              <li>
+              Install all the necessary Python libraries needed to get the project running by executing the following command.
+              <pre class="  language-bash"><code class="  language-bash"><span class="token assign-left variable">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;pip install -r requirements.txt</span></code></pre>
+              </li>
+              <li>
+              In &ensp;<i>config.py</i>&ensp;, add the abbreviations for the teams you want to display on the scoreboard in _FAVS arrays for each sport.
+              <br><p>&emsp; NOTE: The abbreviations for each team in each sport is located in each of the sport's directory in a file called &ensp;<i>teams.py</i>.</p>
+              </li>
+              <li>
+              Boot up the LED Scoreboard by executing and running the following command.
+              <pre class="  language-bash"><code class="  language-bash"><span class="token assign-left variable">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;./run.sh</span></code></pre>
+              </li>
             </ol>
           </p>
         </div>
       </div>
-
-
-      <!-- PI Bootup card -->
-      <div class="card border-primary m-2">
-        <div class="card-header text-center h2">Booting Up the PI</div>
-        <div class="card-body">
-          <p class="card-text">
-            Once all the parts have been delivered, you can begin building the project following
-            this installation guide step-by-step.
-          </p>
-        </div>
-      </div>
-
 
       <!-- Video card -->
       <div class="card border-primary m-2">
